@@ -25,15 +25,16 @@ contract DappIdeaGenerator {
     // https://www.sitepoint.com/solidity-pitfalls-random-number-generation-for-ethereum/
     /// @return a number between 0 and 250
     function generateIdea() public {
+        uint256 newNonce = nonce;
         Idea memory idea = Idea({
-           category: categories[random(nonce) % categories.length],
-           theme: themes[random(nonce + 1) % themes.length],
-           solidityFeature: solidityFeatures[random(nonce + 2) % solidityFeatures.length]
+           category: categories[random(newNonce++) % categories.length],
+           theme: themes[random(newNonce++) % themes.length],
+           solidityFeature: solidityFeatures[random(newNonce++) % solidityFeatures.length]
         });
         userToIdea[msg.sender] = idea;
         emit NewIdea(msg.sender, idea);
 
-        nonce = nonce + 3; // increment the nonce and save
+        nonce = newNonce; // increment the nonce and save
     }
 
     function readIdea(address user) public view returns (Idea memory idea) {
