@@ -27,7 +27,7 @@ contract DappIdeaGenerator {
                            "Player vs. Player fighter", "Mystery", "Puzzle", "Addictive click-to-win scheme",
                            "Role Playing Game", "Card game", "Tabletop (simulated)", "betting"];
 
-    event NewIdea(
+    event NewDappIdea(
         string category,
         string theme,
         string solidityFeature);
@@ -41,14 +41,16 @@ contract DappIdeaGenerator {
         nonce = nonce + 3; // increment the nonce and save
 
         userToIdea[msg.sender] = [category, theme, solidityFeature];
-        emit NewIdea(category, theme, solidityFeature);
+        emit NewDappIdea(category, theme, solidityFeature);
         ideasGenerated = ideasGenerated + 1;
     }
 
     function readIdea() public view returns (string memory category, string memory theme, string memory solidityFeature) {
-        category = userToIdea[msg.sender][0];
-        theme =  userToIdea[msg.sender][1];
-        solidityFeature = userToIdea[msg.sender][2];
+        if (userToIdea[msg.sender].length > 0) {
+            category = userToIdea[msg.sender][0];
+            theme =  userToIdea[msg.sender][1];
+            solidityFeature = userToIdea[msg.sender][2];
+        }
     }
 
     /// @notice Pseudorandom generator, vulnerable to miner manipulation, okay for lighthearted fun.
